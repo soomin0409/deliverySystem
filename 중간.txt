@@ -1,0 +1,71 @@
+
+void initstorage(int x, int y){
+	fscanf(fp,"%d %d %d %s %s",deliver[x][y].buliding,deliver[x][y].room,deliver[x][y].cnt,deliver[x][y].passwad,deliver[x][y].*context);
+	
+}
+int inputpasswad(int x, int y){
+	char input[passwd_len+1];
+	scanf("%s",input);
+	if(deliver[x][y].passwd==input) return 0;
+	else return -1;
+}
+int str_backupsystem(char *filepath){
+	 filepath=fopen("storage.txt","a");
+	 fprintf(filepath,"%d %d %d %s %s",deliver[x][y].buliding,deliver[x][y].room,deliver[x][y].cnt,deliver[x][y].passwad,deliver[x][y].*context);
+	 return 0;  // 비밀번호 초기화 된거 제외
+}
+int str_creatsystem(char* filepath){
+	int x,y;
+	struct_t **delivery=malloc~~
+	filepath = fopen("storage.txt","r");
+	while(EOF){
+	fscanf(fp,"%d %d ",&x,&y);
+	initstorage(x,y);
+	}
+	return 0;
+}
+void str_freeSystem(){
+	free(delivery);
+}
+int str_pushToStorage(int x, int y,~){
+	printf("input content(순서)");
+	scanf("%d%d%s~",nbuliding~~);
+	fprintf(file_path,"%d %d ~",nbliding,nroom)
+	(*(deliver+y)+x)->buliding=nbuilding
+	(*(deliver+y)+x)->room=nroom
+              (*(deliver+y)+x)->cnt=1
+	(*(deliver+y)+x)->password=passwd
+	(*(deliver+y)+x)->context=msg
+	return 0;
+}
+int str_extractStorage(int x,int y){
+	char input[];
+	printf("input(row,col) : );
+	scanf("%d %d,&x,&y);
+	printf(password:)
+	scanf("%s",input);
+	inputpasswad(int x, int y);
+	if(inputpasswd==0){
+		printf("%s",msg)
+		deliver->cnt=0 }
+	else return -1;
+}
+int str_findstorage{int nbuilding, int nRoom){
+	if(cnt==0) return cnt;
+	printf("input(building room : ");
+	scanf("%d %d",&nbuilding,&nroom);
+	while(){
+	if(nbuilding==deliver->nbuling&& nroom=deliver->nroom)
+	{
+		printf("(%d %d)",deliver->x,deliver->y);	
+	}
+	return cnt;
+}
+
+
+
+	
+
+	
+
+	

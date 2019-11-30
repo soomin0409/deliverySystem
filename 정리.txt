@@ -1,0 +1,40 @@
+동 수: N_BUILDING  10
+층 수: N_FLOOR      10
+호 수: N_ROOM       10
+Master: 공통 비밀번호(4)(택배 출력)  // storage.txt 에서 가져오기 
+
+0.표기 : N_FLOOR*100+N_ROOM
+  택배내용: 공백 미포함 문자열(100)
+  보관상태 설정파일에 저장................str_backupSystem: 통상태 파일에 저장
+  시작시 설정파일 복원...........................initStorage: 통 하나 초기화
+  storage_t 수정 불가
+  storage.h 함수 모두 구현
+  보관함크기 택배 정보 등 stctic 변수
+1. 함수
+push package (빈 통에 택배넣기)
+	       : 상태표시
+                      주소,비밀번호, 택배내용 저장....................str_pushToSystem(row,col,동,호,내용,비밀번호):택배 넣기
+extract package (택배 꺼내기).............................str_extractStorage(int x, int y):택배 꺼내기
+	        : 통 좌표 비밀번호 입력
+	          비밀번호 비교.........................inputPassword:비밀번호 입력 및 비교
+	          택배 내용 출력
+check status (통 상태 확인)
+	        : 모든 통의 택배 유무와 주소 출력
+find my package (내 택배 찾기)...........str_findStorage(int nbuilding,int nroom):내 택배 보관함 찾기
+	        : 주소 입력
+	         택배 통 좌표 출력
+
+2. storage.txt 
+ N M.......... 총 통 개수 N*M(4,6)
+ masterkey 4자리
+ storage row, storage column,N_BUILDING,N_FLOOR*100+N_ROOM,비밀번호,택배내용
+ .....................str_creatSystem(char* filepath):보관함 구조체 생성
+3. 종료 전 ...............str_free_System(void): 구조체 메모리 해제
+
+
+
+
+
+storage_t **deliverysystem  구조체 이중 포인터 deliverysystem 2차원 배열
+deliverysystem[row][col]
+   *(*(deliver+i)+j)==deliver[i][j]
