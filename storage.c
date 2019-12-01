@@ -105,11 +105,12 @@ int str_createSystem(char* filepath) {
 	FILE *fp;
 	int i;
 	fp=fopen(filepath,"r");
-	fscanf(fp,"%d %d",&systemSize[0],&systemSize[1]);
-	fscanf(fp,"%4s",master);
+	fscanf(fp,"%d %d %4s",&systemSize[0],&systemSize[1],master);
 	strcpy(masterPassword,master);
-	deliverySystem =(storage_t**)malloc(sizeof(storage_t*) *systemSize[0] );
-	for(i=0;i<systemSize[1];i++){
+	
+	deliverySystem =(storage_t**)malloc(sizeof(storage_t*) * systemSize[0] );
+	
+	for(i=0;i<systemSize[0];i++){
 		*(deliverySystem + i)=(storage_t*)malloc(sizeof(storage_t) * systemSize[1]);
 	}
 	
@@ -119,7 +120,9 @@ int str_createSystem(char* filepath) {
 		if(feof(fp)) break;
 		initStorage(row,col);
 		
+		
 	}
+	
 	fclose(fp);
 	return 0;
 	
@@ -155,6 +158,7 @@ void str_printStorageStatus(void) {
 			if (deliverySystem[i][j].cnt > 0)
 			{
 				printf("%i,%i\t|\t", deliverySystem[i][j].building, deliverySystem[i][j].room);
+				
 			}
 			else
 			{
