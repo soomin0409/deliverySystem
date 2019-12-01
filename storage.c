@@ -26,9 +26,8 @@ static storage_t** deliverySystem; 			//deliverySystem
 static int storedCnt = 0;					//number of cells occupied
 static int systemSize[2] = {0, 0};  		//row/column of the delivery system
 static char masterPassword[PASSWD_LEN+1];	//master password
-static char *pw,*txt,*master;
+static char pw[PASSWD_LEN+1],txt[50],master[PASSWD_LEN+1];
 static int row,col,n_b,n_r;
-static int N,M;
 
 
 
@@ -57,7 +56,8 @@ static void initStorage(int x, int y) {
 	deliverySystem[x][y].room=n_r;
 	deliverySystem[x][y].cnt=1;
 	strcpy(deliverySystem[x][y].passwd,pw);
-	strcpy(deliverySystem[x][y].context,txt);
+	deliverySystem[x][y].context=txt;
+	storedCnt+=deliverySystem[x][y].cnt;
 	return ;
 }
 
@@ -85,8 +85,8 @@ int str_backupSystem(char* filepath) {
 	FILE *fp;
 	int i,j;
 	fp=fopen(filepath,"w");
-	for(i=0;i<N;N++){
-		for(j=0;j<M;j++){
+	for(i=0;i<systemSize[0];i++){
+		for(j=0;j<systemSize[1];j++){
 			if(deliverySystem[i][j].cnt==0) continue;
 			fprintf(fp,"%d %d %d %d %s %s\n",i,j,deliverySystem[i][j].building,deliverySystem[i][j].room,deliverySystem[i][j].passwd,deliverySystem[i][j].context);
 		}
@@ -104,17 +104,19 @@ int str_createSystem(char* filepath) {
 	FILE *fp;
 	int i;
 	fp=fopen(filepath,"r");
-	fscanf(fp,"%d %d\n%s",&N,&M,master);
+	fscanf(fp,"%d %d %s",&systemSize[0],&systemSize[1],master);
 	strcpy(masterPassword,master);
-	deliverySystem =(storage_t**)malloc(sizeof(storage_t*) * N);
-	for(i=0;i<M;i++){
-		*(deliverySystem + i)=(storage_t*)malloc(sizeof(storage_t) * M);
+	deliverySystem =(storage_t**)malloc(sizeof(storage_t*) *systemSize[0] );
+	for(i=0;i<systemSize[1];i++){
+		*(deliverySystem + i)=(storage_t*)malloc(sizeof(storage_t) * systemSize[1]);
 	}
 	
 	while(1){
+		
 		fscanf(fp,"%d %d %d %d %s %s",&row,&col,&n_b,&n_r,pw,txt);
 		if(feof(fp)) break;
 		initStorage(row,col);
+		
 	}
 	fclose(fp);
 	return 0;
@@ -124,7 +126,7 @@ int str_createSystem(char* filepath) {
 //free the memory of the deliverySystem 
 void str_freeSystem(void) {
 		int i;
-		for (i=0;i<N;i++){
+		for (i=0;i<systemSize[0];i++){
 			free(*(deliverySystem+i));
 		}
 }
@@ -221,8 +223,8 @@ int str_extractStorage(int x, int y) {
 int str_findStorage(int nBuilding, int nRoom) {
 	int i,j;
 	int cnt=0;
-	for(i=0;i<N;i++){
-		for(j=0;j<M;j++){
+	for(i=0;i<systemSize[0];i++){
+		for(j=0;j<systemSize[1];j++){
 			if(deliverySystem[i][j].building==nBuilding&&deliverySystem[i][j].room==nRoom&&deliverySystem[i][j].cnt!=0)
 			{
 				printf("(%d , %d) ",i,j);
