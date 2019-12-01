@@ -26,7 +26,7 @@ static storage_t** deliverySystem; 			//deliverySystem
 static int storedCnt = 0;					//number of cells occupied
 static int systemSize[2] = {0, 0};  		//row/column of the delivery system
 static char masterPassword[PASSWD_LEN+1];	//master password
-static char pw[PASSWD_LEN+1],txt[50],master[PASSWD_LEN+1];
+static char pw[PASSWD_LEN+1],txt[101],master[PASSWD_LEN+1];
 static int row,col,n_b,n_r;
 
 
@@ -67,8 +67,8 @@ static void initStorage(int x, int y) {
 static int inputPasswd(int x, int y) {
 	char input[PASSWD_LEN+1];
 	printf("password :");
-	scanf("%s",input);
-	if(deliverySystem[x][y].cnt > 0) return 0;
+	scanf("%4s",input);
+	if(strcmp(deliverySystem[x][y].passwd,input)==0) return 0;
 	else return -1;
 }
 
@@ -114,7 +114,7 @@ int str_createSystem(char* filepath) {
 	
 	while(1){
 		
-		fscanf(fp,"%d %d %d %d %s %s",&row,&col,&n_b,&n_r,pw,txt);
+		fscanf(fp,"%d %d %d %d %4s %100s",&row,&col,&n_b,&n_r,pw,txt);
 		if(feof(fp)) break;
 		initStorage(row,col);
 		
@@ -191,14 +191,12 @@ int str_checkStorage(int x, int y) {
 //char passwd[] : password string (4 characters)
 //return : 0 - successfully put the package, -1 - failed to put
 int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_SIZE+1], char passwd[PASSWD_LEN+1]) {
-	FILE *fp;
+
 	deliverySystem[x][y].building=nBuilding;
 	deliverySystem[x][y].room=nRoom;
 	strcpy(deliverySystem[x][y].passwd,passwd);
 	deliverySystem[x][y].context=msg; 
-	fp=fopen("storage.txt","a");
-	fprintf(fp,"%d %d %d %d %s %s\n",x,y,nBuilding,nRoom,passwd,msg);
-	fclose(fp);
+	deliverySystem[x][y].cnt=1;
 	return 0;
 }
 
@@ -209,7 +207,8 @@ int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_S
 //int x, int y : coordinate of the cell to extract
 //return : 0 - successfully extracted, -1 = failed to extract
 int str_extractStorage(int x, int y) {
-	if(inputPasswd!=0) return -1;
+	
+	if(inputPasswd(x,y)!=0) return -1;
 	else{
 		printf("%s",deliverySystem[x][y].context);
 		deliverySystem[x][y].cnt=0;
