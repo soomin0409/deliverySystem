@@ -68,7 +68,7 @@ static int inputPasswd(int x, int y) {
 	char input[PASSWD_LEN+1];
 	printf("password :");
 	scanf("%4s",input);
-	if(strcmp(deliverySystem[x][y].passwd,input)==0) return 0;
+	if(strcmp(deliverySystem[x][y].passwd,input)==0||strcmp(masterPassword,input)==0) return 0;
 	else return -1;
 }
 
@@ -105,7 +105,8 @@ int str_createSystem(char* filepath) {
 	FILE *fp;
 	int i;
 	fp=fopen(filepath,"r");
-	fscanf(fp,"%d %d %s",&systemSize[0],&systemSize[1],master);
+	fscanf(fp,"%d %d",&systemSize[0],&systemSize[1]);
+	fscanf(fp,"%4s",master);
 	strcpy(masterPassword,master);
 	deliverySystem =(storage_t**)malloc(sizeof(storage_t*) *systemSize[0] );
 	for(i=0;i<systemSize[1];i++){
