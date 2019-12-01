@@ -85,6 +85,7 @@ int str_backupSystem(char* filepath) {
 	FILE *fp;
 	int i,j;
 	fp=fopen(filepath,"w");
+	fprintf(fp,"%d %d\n%s\n",systemSize[0],systemSize[1],masterPassword);
 	for(i=0;i<systemSize[0];i++){
 		for(j=0;j<systemSize[1];j++){
 			if(deliverySystem[i][j].cnt==0) continue;
