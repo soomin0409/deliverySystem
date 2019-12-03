@@ -52,6 +52,7 @@ static void printStorageInside(int x, int y) {
 //and allocate memory to the context pointer
 //int x, int y : cell coordinate to be initialized
 static void initStorage(int x, int y) {
+	
 	deliverySystem[x][y].building=n_b;
 	deliverySystem[x][y].room=n_r;
 	deliverySystem[x][y].cnt=1;
@@ -103,7 +104,7 @@ int str_backupSystem(char* filepath) {
 //return : 0 - successfully created, -1 - failed to create the system
 int str_createSystem(char* filepath) {
 	FILE *fp;
-	int i;
+	int i,j;
 	fp=fopen(filepath,"r");
 	fscanf(fp,"%d %d %4s",&systemSize[0],&systemSize[1],master);
 	strcpy(masterPassword,master);
@@ -111,8 +112,12 @@ int str_createSystem(char* filepath) {
 	deliverySystem =(storage_t**)malloc(sizeof(storage_t*) * systemSize[0] );
 	
 	for(i=0;i<systemSize[0];i++){
-		*(deliverySystem + i)=(storage_t*)malloc(sizeof(storage_t) * systemSize[1]);
+		deliverySystem[i]=(storage_t*)malloc(sizeof(storage_t) * systemSize[1]);
 	}
+		for(i=0;i<systemSize[0];i++){
+			for(j=0;j<systemSize[1];j++){
+				deliverySystem[i][j].cnt=0;			}
+		}
 	
 	while(1){
 		
@@ -132,8 +137,9 @@ int str_createSystem(char* filepath) {
 void str_freeSystem(void) {
 		int i;
 		for (i=0;i<systemSize[0];i++){
-			free(*(deliverySystem+i));
+			free(deliverySystem[i]);
 		}
+		free(deliverySystem);
 }
 
 
