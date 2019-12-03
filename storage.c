@@ -216,7 +216,7 @@ int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_S
 	strcpy(deliverySystem[x][y].context,msg);
 	strcpy(deliverySystem[x][y].passwd,passwd);
 	deliverySystem[x][y].cnt=1;
-	storedCnt-=1;
+	storedCnt+=1;
 	return 0;
 }
 
@@ -231,7 +231,7 @@ int str_extractStorage(int x, int y) {
 	if(strcmp(deliverySystem[x][y].passwd,input)==0||strcmp(masterPassword,input)==0){
 		printf("context: %s ",deliverySystem[x][y].context);
 		deliverySystem[x][y].cnt=0;
-		storedCnt+=1;
+		storedCnt-=1;
 		return 0;
 	}
 	else return -1;
