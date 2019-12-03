@@ -127,11 +127,10 @@ int str_createSystem(char* filepath) {
 	
 	while(1){
 		
-		if(feof(fp)) break;
 		fscanf(fp,"%d %d %d %d %4s %1000s",&row,&col,&n_b,&n_r,pw,txt);
 		initStorage(row,col);
-		
-		
+		printf("%s\n",deliverySystem[row][col].context);
+		if(feof(fp)) break;		
 	}
 	
 	fclose(fp);
