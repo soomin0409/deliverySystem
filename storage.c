@@ -58,6 +58,7 @@ static void initStorage(int x, int y) {
 	deliverySystem[x][y].cnt=1;
 	strcpy(deliverySystem[x][y].passwd,pw);
 	deliverySystem[x][y].context=txt;
+	
 	storedCnt+=deliverySystem[x][y].cnt;
 	return ;
 }
@@ -116,13 +117,18 @@ int str_createSystem(char* filepath) {
 	}
 		for(i=0;i<systemSize[0];i++){
 			for(j=0;j<systemSize[1];j++){
-				deliverySystem[i][j].cnt=0;			}
+					deliverySystem[i][j].cnt=0;
+					deliverySystem[i][j].building=0;
+					deliverySystem[i][j].room=0;
+					deliverySystem[i][j].passwd[0]='\0';
+					deliverySystem[i][j].context="\0";
+					}
 		}
 	
 	while(1){
 		
-		fscanf(fp,"%d %d %d %d %4s %100s",&row,&col,&n_b,&n_r,pw,txt);
 		if(feof(fp)) break;
+		fscanf(fp,"%d %d %d %d %4s %1000s",&row,&col,&n_b,&n_r,pw,txt);
 		initStorage(row,col);
 		
 		
@@ -208,6 +214,7 @@ int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_S
 	strcpy(deliverySystem[x][y].passwd,passwd);
 	deliverySystem[x][y].context=msg; 
 	deliverySystem[x][y].cnt=1;
+	storedCnt+=1;
 	return 0;
 }
 
@@ -223,6 +230,7 @@ int str_extractStorage(int x, int y) {
 	else{
 		printf("%s",deliverySystem[x][y].context);
 		deliverySystem[x][y].cnt=0;
+		storedCnt-=1;
 		return 0;
 	}
 }
