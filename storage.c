@@ -152,11 +152,12 @@ void str_freeSystem(void) {
 	int i,x,y;
 	for(x=0;x<systemSize[0];x++){
 		for(y=0;y<systemSize[1];y++){		
-	free(deliverySystem[x][y].context);
-	}
-}                   //   free context pointer
-	for(i=0;i<systemSize[0];i++)
+			free(deliverySystem[x][y].context);
+		}
+	}                   //   free context pointer
+	for(i=0;i<systemSize[0];i++){
 		free(deliverySystem[i]);
+	}
 	free(deliverySystem);  // free deliverySystem pointer
 	return ;
 	
@@ -226,6 +227,9 @@ int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_S
 	strcpy(deliverySystem[x][y].context,msg);
 	strcpy(deliverySystem[x][y].passwd,passwd);
 	deliverySystem[x][y].cnt=1;                     // save data in cell(x,y)
+	if(deliverySystem[x][y].cnt!=1){
+		return -1;
+	}
 	storedCnt+=1;                     
 	return 0;
 }
