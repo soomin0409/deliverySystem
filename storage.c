@@ -55,7 +55,7 @@ static void initStorage(int x, int y) {
 	deliverySystem[x][y].cnt=0;
 	deliverySystem[x][y].room=0;
 	deliverySystem[x][y].passwd[0]='\0';
-	deliverySystem[x][y].context=(char*)malloc(101*sizeof(char));
+	deliverySystem[x][y].context=(char*)malloc(101*sizeof(char));   // allocate context pointer
 }
 
 //get password input and check if it is correct for the cell (x,y)
@@ -65,7 +65,7 @@ static int inputPasswd(int x, int y) {
 	
 	printf("password: ");
 	scanf("%4s",input);
-	if(strcmp(deliverySystem[x][y].passwd,input)==0) return 0;
+	if(strcmp(deliverySystem[x][y].passwd,input)==0) return 0; // compare input and saved password
 	else return -1;
 }
 
@@ -81,10 +81,13 @@ static int inputPasswd(int x, int y) {
 int str_backupSystem(char* filepath) {
 	FILE *fp;
 	int i,j;
-	fp=fopen(filepath,"w");
+	
+	fp=fopen(filepath,"w"); 
+	
 	if(fp==NULL) return-1;
+	
 	else{	
-		fprintf(fp,"%d %d\n%s\n",systemSize[0],systemSize[1],masterPassword);
+		fprintf(fp,"%d %d\n%s\n",systemSize[0],systemSize[1],masterPassword);  // back up row, column and masterkey
 	for(i=0;i<systemSize[0];i++){
 		for(j=0;j<systemSize[1];j++){
 			if(deliverySystem[i][j].cnt==1){
@@ -92,7 +95,7 @@ int str_backupSystem(char* filepath) {
 			}
 			
 		}
-	}
+	}				// write data in file if cnt is 1
 	   fclose(fp);
 		return 0;	}
 	
@@ -106,32 +109,39 @@ int str_backupSystem(char* filepath) {
 int str_createSystem(char* filepath) {
 	FILE *fp;
 	int i,x,y;
-	int row,col,n_b,n_r;
+	int row,col,building_num,room_num;
 	char pw[5]="",txt[101]="";
-	fp=fopen(filepath,"r");
+	
+	fp=fopen(filepath,"r");  
+	
 	if(fp==NULL) return -1;
+	
 	else {
-		fscanf(fp,"%d %d %s\n",&systemSize[0],&systemSize[1],masterPassword);
+		fscanf(fp,"%d %d %s\n",&systemSize[0],&systemSize[1],masterPassword);      // get row,column and masterkey
 		deliverySystem = (storage_t**)malloc(sizeof(storage_t*) * systemSize[0]);
 		for(i=0;i<systemSize[0];i++){
 			deliverySystem[i]=(storage_t*)malloc(sizeof(storage_t)*systemSize[1]);
 		}
+		if(deliverySystem == NULL){
+			return -1;
+		}                          //    allocate memory 
 		for(x=0;x<systemSize[0];x++){
 			for(y=0;y<systemSize[1];y++){
 				initStorage(x,y);
 			}
-		}
+		}                          // initialize storage
 		while(1){
 		
-		fscanf(fp,"%d %d %d %d %s %s\n",&row,&col,&n_b,&n_r,pw,txt);
-		deliverySystem[row][col].building=n_b;
-		deliverySystem[row][col].room=n_r;
+		fscanf(fp,"%d %d %d %d %s %s\n",&row,&col,&building_num,&room_num,pw,txt);
+		deliverySystem[row][col].building=building_num;
+		deliverySystem[row][col].room=room_num;
 		deliverySystem[row][col].cnt=1;
 		strcpy(deliverySystem[row][col].passwd,pw);
 		strcpy(deliverySystem[row][col].context,txt);
 		storedCnt+=1;
 		if(feof(fp)) break;
-		}
+		
+		}                          // get data in file 
 		fclose(fp);
 		return 0;
 	}
@@ -144,10 +154,10 @@ void str_freeSystem(void) {
 		for(y=0;y<systemSize[1];y++){		
 	free(deliverySystem[x][y].context);
 	}
-}
+}                   //   free context pointer
 	for(i=0;i<systemSize[0];i++)
 		free(deliverySystem[i]);
-	free(deliverySystem);
+	free(deliverySystem);  // free deliverySystem pointer
 	return ;
 	
 }
@@ -215,8 +225,8 @@ int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_S
 	deliverySystem[x][y].room=nRoom;
 	strcpy(deliverySystem[x][y].context,msg);
 	strcpy(deliverySystem[x][y].passwd,passwd);
-	deliverySystem[x][y].cnt=1;
-	storedCnt+=1;
+	deliverySystem[x][y].cnt=1;                     // save data in cell(x,y)
+	storedCnt+=1;                     
 	return 0;
 }
 
@@ -233,7 +243,7 @@ int str_extractStorage(int x, int y) {
 		deliverySystem[x][y].cnt=0;
 		storedCnt-=1;
 		return 0;
-	}
+	}                      // compare input with saved password or masterkey
 	else return -1;
 	
 }
@@ -253,7 +263,7 @@ int str_findStorage(int nBuilding, int nRoom){
 				cnt+=1;
 			}
 		}
-	}
+	}                                   //  if   building,room  are same and cnt isn't 0 , print cells 
 	
 	return cnt ;
 }
