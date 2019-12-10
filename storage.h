@@ -1,4 +1,4 @@
-#define MAX_MSG_SIZE			100
+#define MAX_MSG_SIZE			500
 #define PASSWD_LEN				4
 
 int str_createSystem(char* filepath);

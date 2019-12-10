@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "storage.h"
-
 /* 
   definition of storage cell structure ----
   members :
@@ -55,7 +54,7 @@ static void initStorage(int x, int y) {
 	deliverySystem[x][y].cnt=0;
 	deliverySystem[x][y].room=0;
 	deliverySystem[x][y].passwd[0]='\0';
-	deliverySystem[x][y].context=(char*)malloc(101*sizeof(char));   // allocate context pointer
+	
 }
 
 //get password input and check if it is correct for the cell (x,y)
@@ -110,7 +109,7 @@ int str_createSystem(char* filepath) {
 	FILE *fp;
 	int i,x,y;
 	int row,col,building_num,room_num;
-	char pw[5]="",txt[101]="";
+	char pw[5]="",txt[MAX_MSG_SIZE+1]="";
 	
 	fp=fopen(filepath,"r");  
 	
@@ -137,6 +136,7 @@ int str_createSystem(char* filepath) {
 		deliverySystem[row][col].room=room_num;
 		deliverySystem[row][col].cnt=1;
 		strcpy(deliverySystem[row][col].passwd,pw);
+		deliverySystem[row][col].context=(char*)malloc(strlen(txt)+1); // allocate memory to context pointer
 		strcpy(deliverySystem[row][col].context,txt);
 		storedCnt+=1;
 		if(feof(fp)) break;
@@ -224,6 +224,7 @@ int str_checkStorage(int x, int y) {
 int str_pushToStorage(int x, int y, int nBuilding, int nRoom, char msg[MAX_MSG_SIZE+1], char passwd[PASSWD_LEN+1]) {
 	deliverySystem[x][y].building=nBuilding;
 	deliverySystem[x][y].room=nRoom;
+	deliverySystem[x][y].context=(char*)malloc(strlen(msg)+1);     // allocate memory to context pointer
 	strcpy(deliverySystem[x][y].context,msg);
 	strcpy(deliverySystem[x][y].passwd,passwd);
 	deliverySystem[x][y].cnt=1;                     // save data in cell(x,y)
