@@ -47,7 +47,6 @@ static void printStorageInside(int x, int y) {
 
 //initialize the storage
 //set all the member variable as an initial value
-//and allocate memory to the context pointer
 //int x, int y : cell coordinate to be initialized
 static void initStorage(int x, int y) {
 	deliverySystem[x][y].building=0;
